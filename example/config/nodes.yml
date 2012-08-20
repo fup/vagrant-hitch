@@ -1,0 +1,22 @@
+default: &default
+  vbox: vbox-name
+  orgname: vagrant.test
+  puppet:
+    manifest_file: site.pp
+  ports:
+    http:
+      host: 10080
+      guest: 80
+    https:
+      host: 10443
+      guest: 443
+    mysql:
+      host: 13310
+      guest: 3306
+    tomcat:
+      host: 18080
+      guest: 8080
+test1:
+  <<: *default
+test2:
+  <<: *default

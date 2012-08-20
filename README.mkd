@@ -1,0 +1,47 @@
+#VagrantHitch
+
+This vagrant module adds data driven infrastructure to your vagrant environment.
+
+## Installation
+
+If you installed it as a ruby gem, you don't have to do anthing. Just add the following line to your Vagrantfile
+
+```
+Vagrant::Config.run &VagrantHitch.up!(path_to_config_directory)
+```
+
+for example:
+
+```
+Vagrant::Config.run &VagrantHitch.up!(File.join(File.dirname(__FILE__),'config'))
+```
+
+If not installed as a gem, you'll have to source vagrant-hitch appropriately and add to your Vagrantfile:
+
+```
+require 'vagrant-hitch'
+```
+
+## Usage
+
+Example files are in the /example directory
+
+### Directory structure
+The directory structure assumes:
+
+```
+   .                                        # Project directory
+   ├── manifests
+   │   └── site.pp
+   ├── modules
+   │   ├── dist
+   │   └── site
+   └── vagrant
+       ├── Vagrantfile                      # Project vagrantfile
+       └── config                           # The data driven infrastructure directory
+           ├── graph
+           │   ├── test1.vagrant.test
+           │   └── test2.vagrant.test
+           ├── nodes.yml
+           └── provisioner_puppet.yml
+```

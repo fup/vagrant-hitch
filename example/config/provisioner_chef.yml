@@ -1,0 +1,6 @@
+chef:
+  log_level: 'debug'
+  environment: "development"
+  base_roles:
+    - base
+    - vagrant

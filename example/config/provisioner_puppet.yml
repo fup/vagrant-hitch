@@ -1,0 +1,9 @@
+puppet:
+  manifests_path: ../manifests
+  modules:
+    - ../modules/dist
+    - ../modules/site
+  options:
+    - --verbose
+    - --debug
+    - --graph
