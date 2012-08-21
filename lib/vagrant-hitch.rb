@@ -18,7 +18,7 @@ module VagrantHitch
       begin
         profiles = YAML::load_file(File.join(config_dir,'nodes.yml'))
 
-        ['chef', 'puppet'].each do |type|
+        ['chef', 'puppet', 'puppet_server'].each do |type|
           if File.exists?(File.join(config_dir, "provisioner_#{type}.yml"))
             provisioner_data = YAML::load_file(File.join(config_dir, "provisioner_#{type}.yml"))
             instance_variable_set("@" + type + "_provisioner_defaults", provisioner_data)
@@ -45,6 +45,17 @@ module VagrantHitch
           # Configure Hostname
           host_name = node_config.has_key?("orgname") ? "#{profile.to_s}.#{node_config['orgname']}" : profile.to_s
           config.vm.host_name = host_name
+
+          if node_config.has_key?('guest')
+            config.vm.guest = node_config['guest']
+          end
+
+          # WinRM specific Configuration
+          if node_config.has_key?('winrm')
+            config.winrm.username = node_config['winrm']['username']
+            config.winrm.password = node_config['winrm']['password']
+            config.winrm.timeout = node_config['winrm']['timeout'] || 1800
+          end
 
           # Configure memory and CPU
           config.vm.customize ["modifyvm", :id, "--memory", node_config['memory_size'].to_s] if node_config.has_key?('memory_size')

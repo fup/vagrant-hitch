@@ -1,0 +1,6 @@
+puppet_server:
+  server: puppet.test.com
+  options:
+    - --no-daemonize
+    - --debug
+    - --onetime
