@@ -4,7 +4,7 @@ This vagrant module adds data driven infrastructure to your vagrant environment.
 
 ## Installation
 
-If you installed it as a ruby gem, you don't have to do anthing. Just add the following line to your Vagrantfile
+If you installed it as a ruby gem. Just add the following line to your Vagrantfile
 
 ```
 Vagrant::Config.run &VagrantHitch.up!(path_to_config_directory)
