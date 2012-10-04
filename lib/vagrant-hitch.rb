@@ -43,8 +43,9 @@ module VagrantHitch
           config.vm.box_url = node_config['vbox_url']
 
           # Configure Hostname
-          host_name = node_config.has_key?("orgname") ? "#{profile.to_s}.#{node_config['orgname']}" : profile.to_s
-          config.vm.host_name = host_name
+          if node_config.has_key?('hostname')
+            config.vm.host_name = node_config['hostname']
+          end
 
           if node_config.has_key?('guest')
             config.vm.guest = node_config['guest']
