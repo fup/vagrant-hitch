@@ -8,6 +8,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/fup/vagrant-hitch"
 
   gem.add_dependency "vagrant"
+  gem.add_development_dependency "rspec"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
