@@ -29,11 +29,13 @@ module VagrantHitch
         exit
       end
 
-      # Ignore any and all YAML blocks with these keys.
+      # Ignore any and all YAML blocks with "default" in the key name
       # Typically, this should be used for any YAML anchors
       # that may be reused for other Vagrantbox definitions
       ignore_config = ['default']
-      ignore_config.each { |ignore_key| profiles.delete(ignore_key) }
+      profiles.delete_if do |profile, config|
+        true if ignore_config.find_index { |ignore_key| profile.include?(ignore_key) }
+      end
 
       profiles.each do |profile, node_config|
         # Bail out if it is one of our special 'ignore' config blocks
@@ -93,8 +95,8 @@ module VagrantHitch
               if node_config['puppet']['options'].include?('--graph')
                 begin
                   graph_dir = File.join(config_dir,'..','graph')
-                  [graph_dir, "#{graph_dir}/#{host_name}"].each { |d| Dir.mkdir(d) if !File.directory?(d) }
-                  node_config['puppet']['options'] << "--graphdir=/vagrant/graph/#{host_name}"
+                  [graph_dir, "#{graph_dir}/#{node_config['hostname']}"].each { |d| Dir.mkdir(d) if !File.directory?(d) }
+                  node_config['puppet']['options'] << "--graphdir=/vagrant/graph/#{node_config['hostname']}"
                 rescue => e
                   puts "Unable to create Puppet Graph Directory: #{e}"
                 end

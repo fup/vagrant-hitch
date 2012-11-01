@@ -16,6 +16,8 @@ default: &default
     tomcat:
       host: 18080
       guest: 8080
+default_app: &default_app
+web_default: &web_default
 test1:
   <<: *default
 test2:

@@ -11,4 +11,8 @@ describe VagrantHitch do
   it 'should require a valid configuration path' do
     expect { VagrantHitch.up!('somepath') }.to raise_error
   end
+
+  it 'should return a correct status given a valid vagrantfile' do
+    Vagrant::Config.run &VagrantHitch.up!(File.join(File.dirname(__FILE__),'..','example','config'))
+  end
 end
