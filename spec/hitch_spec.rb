@@ -17,14 +17,15 @@ describe VagrantHitch do
   context "with a valid Vagrantfile" do
     # set up Vagrantfile
     before(:all) do
-      thisdir = File.dirname(__FILE__)
+      rootdir = File.join(File.dirname(__FILE__),'..')
+      tempdir = Dir.tmpdir
       vagrantfile = <<-HERE.gsub(/^ {6}/, '')
-        require '#{thisdir}/../lib/vagrant_init.rb'
-        Vagrant::Config.run &VagrantHitch.up!(File.join(File.dirname(__FILE__),'..','example','config'))
+        require '#{rootdir}/lib/vagrant_init.rb'
+        Vagrant::Config.run &VagrantHitch.up!(File.join('#{rootdir}','example','config'))
       HERE
       # create new Vagrantfile in ../tmp
-      File.open(File.join(thisdir,"../tmp/Vagrantfile"), "w") {|f| f.write(vagrantfile) }
-      Dir.chdir(File.join(thisdir,"../tmp"))
+      File.open(File.join(tempdir,"Vagrantfile"), "w") {|f| f.write(vagrantfile) }
+      Dir.chdir(tempdir)
     end
 
     # clean up the temporary directory
@@ -33,9 +34,7 @@ describe VagrantHitch do
 
     it 'should not include the default node information' do
       output = Array.new
-      IO.popen("vagrant status") { |io|
-        output = io.readlines.collect { |l| l.chomp }
-      }
+      IO.popen("vagrant status") { |io| output = io.readlines.collect { |l| l.chomp } }
       output.should include("test1                    not created","test2                    not created")
       output.should_not include("default                  not created")
     end
