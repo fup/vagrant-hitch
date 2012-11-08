@@ -45,9 +45,8 @@ module VagrantHitch
           config.vm.box_url = node_config['vbox_url']
 
           # Configure Hostname
-          if node_config.has_key?('hostname')
-            config.vm.host_name = node_config['hostname']
-          end
+          hostname = node_config.has_key?('orgname') ? "#{profile.to_s}.#{node_config['orgname']}" : "#{profile.to_s}.vagrant"
+          config.vm.host_name = hostname
 
           if node_config.has_key?('guest')
             config.vm.guest = node_config['guest']
@@ -104,6 +103,31 @@ module VagrantHitch
 
               # Puppet Options must be the last option to ensure any additions are included
               puppet.options = node_config['puppet']['options'].join(' ')
+            end
+          end
+
+          # Setup Puppet Server Provisioner
+          if node_config.has_key?('puppet_server')
+            # Import any defaults set by the Puppet Server Provisioner
+            node_config.deep_merge!(@puppet_server_provisioner_defaults) if !@puppet_server_provisioner_defaults.nil?
+
+            config.vm.provision :puppet_server do |puppet|
+              puppet.puppet_server = node_config['puppet_server']['server']
+              puppet.puppet_node = hostname
+
+              # Setup Puppet Graphing
+              if node_config['puppet_server']['options'].include?('--graph')
+                begin
+                  graph_dir = File.join(config_dir,'..','graph')
+                  [graph_dir, "#{graph_dir}/#{node_config['hostname']}"].each { |d| Dir.mkdir(d) if !File.directory?(d) }
+                  node_config['puppet_server']['options'] << "--graphdir=/vagrant/graph/#{node_config['hostname']}"
+                rescue => e
+                  puts "Unable to create Puppet Graph Directory: #{e}"
+                end
+              end
+
+              # Puppet Options must be the last option to ensure any additions are included
+              puppet.options = node_config['puppet_server']['options'].join(' ')
             end
           end
 
