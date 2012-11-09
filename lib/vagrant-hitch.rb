@@ -42,12 +42,14 @@ module VagrantHitch
         config.vm.define profile do |config|
 
           # Vagrant-DNS Support
-          if node_config['dns']['tld']
-            config.dns.tld = node_config['tld']
-          end
+          if node_config['dns']
+            if node_config['dns']['tld']
+              config.dns.tld = node_config['dns']['tld']
+            end
 
-          if node_config['dns']['patterns']
-            config.dns.patterns = node_config['dns']['patterns']
+            if node_config['dns']['patterns']
+              config.dns.patterns = node_config['dns']['patterns']
+            end
           end
 
           # Setup VBox
