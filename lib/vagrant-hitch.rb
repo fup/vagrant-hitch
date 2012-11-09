@@ -40,6 +40,16 @@ module VagrantHitch
       profiles.each do |profile, node_config|
         # Bail out if it is one of our special 'ignore' config blocks
         config.vm.define profile do |config|
+
+          # Vagrant-DNS Support
+          if node_config['dns']['tld']
+            config.dns.tld = node_config['tld']
+          end
+
+          if node_config['dns']['patterns']
+            config.dns.patterns = node_config['dns']['patterns']
+          end
+
           # Setup VBox
           config.vm.box = node_config['vbox']
           config.vm.box_url = node_config['vbox_url']
@@ -149,5 +159,3 @@ module VagrantHitch
     end.curry[cfdir]
   end
 end
-
-
