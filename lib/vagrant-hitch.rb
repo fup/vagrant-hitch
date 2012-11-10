@@ -106,8 +106,8 @@ module VagrantHitch
               if node_config['puppet']['options'].include?('--graph')
                 begin
                   graph_dir = File.join(config_dir,'..','graph')
-                  [graph_dir, "#{graph_dir}/#{node_config['hostname']}"].each { |d| Dir.mkdir(d) if !File.directory?(d) }
-                  node_config['puppet']['options'] << "--graphdir=/vagrant/graph/#{node_config['hostname']}"
+                  [graph_dir, "#{graph_dir}/#{hostname}"].each { |d| Dir.mkdir(d) if !File.directory?(d) }
+                  node_config['puppet']['options'] << "--graphdir=/vagrant/graph/#{hostname}"
                 rescue => e
                   puts "Unable to create Puppet Graph Directory: #{e}"
                 end
@@ -131,8 +131,8 @@ module VagrantHitch
               if node_config['puppet_server']['options'].include?('--graph')
                 begin
                   graph_dir = File.join(config_dir,'..','graph')
-                  [graph_dir, "#{graph_dir}/#{node_config['hostname']}"].each { |d| Dir.mkdir(d) if !File.directory?(d) }
-                  node_config['puppet_server']['options'] << "--graphdir=/vagrant/graph/#{node_config['hostname']}"
+                  [graph_dir, "#{graph_dir}/#{hostname}"].each { |d| Dir.mkdir(d) if !File.directory?(d) }
+                  node_config['puppet_server']['options'] << "--graphdir=/vagrant/graph/#{hostname}"
                 rescue => e
                   puts "Unable to create Puppet Graph Directory: #{e}"
                 end
