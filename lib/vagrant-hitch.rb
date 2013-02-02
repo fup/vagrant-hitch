@@ -1,10 +1,11 @@
 require 'yaml'
 require 'vagrant'
+require 'backports'
 require File.join(File.dirname(__FILE__),'deep_merge')
 
 module VagrantHitch
   def self.validate(cfdir)
-    unless Dir.exist?(cfdir)
+    unless File.exist?(cfdir) && File.directory?(cfdir)
       puts "The directory #{cfdir} is not valid"
       exit
     end
@@ -12,7 +13,6 @@ module VagrantHitch
 
   def self.up!(cfdir)
     self.validate(cfdir)
-
     return lambda do |config_dir, config|
       #Load up Config Files
       begin
@@ -33,8 +33,8 @@ module VagrantHitch
       # Typically, this should be used for any YAML anchors
       # that may be reused for other Vagrantbox definitions
       ignore_config = ['default']
-      profiles.delete_if do |profile, config|
-        true if ignore_config.find_index { |ignore_key| profile.include?(ignore_key) }
+      profiles.delete_if do |p, c|
+        true if ignore_config.find_index { |ignore_key| p.include?(ignore_key) }
       end
 
       profiles.each do |profile, node_config|

@@ -8,6 +8,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/fup/vagrant-hitch"
 
   gem.add_dependency "vagrant"
+  gem.add_dependency "backports"
   gem.add_development_dependency "rspec"
 
   gem.files         = `git ls-files`.split($\)
