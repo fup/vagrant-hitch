@@ -1,8 +1,10 @@
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 
+task :default => [:test]
+
 desc "run all functional specs in this ruby environment"
-RSpec::Core::RakeTask.new(:spec) do |t|
+RSpec::Core::RakeTask.new(:test) do |t|
   t.pattern = 'spec/*_spec.rb'
 
   t.rspec_opts = [ 
