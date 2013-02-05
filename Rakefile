@@ -17,7 +17,7 @@ end
 
 desc "run the specs through all the supported rubies"
 task :rubies do
-  system("rvm 1.8.7-p370,1.9.3-p194 do rake spec")
+  system("rvm 1.8.7-p370,1.9.3-p194 do rake test")
 end
 
 desc "set up all ruby environments"
