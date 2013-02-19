@@ -1,0 +1,4 @@
+shell:
+  path: '../script/example.sh'
+  inline: "echo $1 > /vagrant/test"
+  args: "'write this to a file'"

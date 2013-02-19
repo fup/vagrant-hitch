@@ -117,8 +117,7 @@ describe VagrantHitch do
       end
 
       it 'should configure multiple provisioners' do
-        pending "Set up multiple provisioners - shell + puppet|chef"
-        pp vagrant_env.vms_ordered.first.config.vm.provisioners
+        vagrant_env.vms_ordered.last.config.vm.provisioners.should have(2).items
       end
     end
 

@@ -2,6 +2,7 @@ require 'yaml'
 require 'vagrant'
 require 'backports'
 require 'deep_merge'
+require 'pry'
 
 module VagrantHitch
   def self.validate(cfdir)
@@ -83,8 +84,16 @@ module VagrantHitch
     end
   end
 
-  def self.setup_provisioners(profile, node_config, config)
+  def self.setup_provisioners(profile, node_config, config, config_dir)
     # Setup Shell provisioner
+    if node_config.has_key?('shell')
+      node_config.deep_merge!(@shell_provisioner_defaults) if !@shell_provisioner_defaults.nil?
+      config.vm.provision :shell do |shell|
+        shell.inline = node_config['shell']['inline'] if node_config['shell'].has_key?('inline')
+        shell.args   = node_config['shell']['args'] if node_config['shell'].has_key?('args')
+        shell.path   = node_config['shell']['path'] if node_config['shell'].has_key?('path')
+      end
+    end
 
     # Setup Puppet Provisioner
     if node_config.has_key?('puppet')
@@ -154,7 +163,7 @@ module VagrantHitch
 
   end
 
-  def self.configure_node(profile, node_config, config)
+  def self.configure_node(profile, node_config, config, config_dir)
     # Bail out if it is one of our special 'ignore' config blocks
     config.vm.define profile do |config|
       # Setup the environment
@@ -174,7 +183,7 @@ module VagrantHitch
       self.setup_mounts(profile, node_config, config)
 
       # set up the provisioners
-      self.setup_provisioners(profile, node_config, config)
+      self.setup_provisioners(profile, node_config, config, config_dir)
     end
   end
 
@@ -185,7 +194,7 @@ module VagrantHitch
       begin
         profiles = YAML::load_file(File.join(config_dir,'nodes.yml'))
 
-        ['chef', 'puppet', 'puppet_server'].each do |type|
+        ['shell','chef','puppet','puppet_server'].each do |type|
           if File.exists?(File.join(config_dir, "provisioner_#{type}.yml"))
             provisioner_data = YAML::load_file(File.join(config_dir, "provisioner_#{type}.yml"))
             instance_variable_set("@" + type + "_provisioner_defaults", provisioner_data)
@@ -206,7 +215,7 @@ module VagrantHitch
 
       # Set up each profile
       profiles.each do |profile, node_config|
-        self.configure_node(profile, node_config, config)
+        self.configure_node(profile, node_config, config, config_dir)
       end
     end.curry[cfdir]
   end

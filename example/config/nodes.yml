@@ -38,6 +38,8 @@ test1:
       guest: 3306
 test2:
   <<: *default
+  shell:
+  puppet:
   ports:
     tomcat:
       host: 18080
