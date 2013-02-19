@@ -1,8 +1,14 @@
 default: &default
+  cpu_count: 2
+  memory_size: 512
   vbox: vbox-name
   orgname: vagrant.test
   puppet:
     manifest_file: site.pp
+  mounts:
+    webapp:
+      host: ./
+      guest: /opt/www/
   ports:
     http:
       host: 10080
@@ -10,15 +16,33 @@ default: &default
     https:
       host: 10443
       guest: 443
-    mysql:
-      host: 13310
-      guest: 3306
-    tomcat:
-      host: 18080
-      guest: 8080
 default_app: &default_app
 web_default: &web_default
 test1:
   <<: *default
+  # Mounts do not merge, they only override because YAML anchors don't merge
+  ip: 10.10.10.10
+  puppet:
+    manifest_file: test1.pp
+  mounts:
+    webapp:
+      host: ./
+      guest: /opt/www/
+    database:
+      host: ./
+      guest: /opt/mysql/database
+  # Ports do not merge, they only override because YAML anchors don't merge
+  ports:
+    mysql:
+      host: 13310
+      guest: 3306
 test2:
   <<: *default
+  ports:
+    tomcat:
+      host: 18080
+      guest: 8080
+  mounts:
+    tomcat:
+      host: ./
+      guest: /opt/tomcat/webapp
