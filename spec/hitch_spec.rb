@@ -5,7 +5,7 @@ require File.join(File.dirname(__FILE__),'..','/lib/vagrant-hitch')
 describe 'Hash' do
   let(:a) { {:string => "a", :array => [ 0,1,2 ], :hash => { :one => '1', :two => '2' } } }
   let(:b) { {:string => "b", :array => [ 3,4,5 ], :hash => { :three => '3', :four => '4' } } }
-  let(:ab) { {:string => "b", :array => [0,1,2,3,4,5 ], :hash => {:one => '1', :two => '2', :three => '3', :four => '4' } } }
+  let(:ab) { {:string => "a", :array => [0,1,2,3,4,5 ], :hash => {:one => '1', :two => '2', :three => '3', :four => '4' } } }
 
   it 'Hashes should have deep merge available' do
     a.should respond_to(:deep_merge)
@@ -13,7 +13,7 @@ describe 'Hash' do
   end
 
   it 'merges should work as expected' do
-    a.deep_merge!(b).should eql(ab)
+    a.deep_merge(b).should eql(ab)
   end
 end
 

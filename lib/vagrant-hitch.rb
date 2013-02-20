@@ -87,7 +87,7 @@ module VagrantHitch
   def self.setup_provisioners(profile, node_config, config, config_dir)
     # Setup Shell provisioner
     if node_config.has_key?('shell')
-      node_config.deep_merge!(@shell_provisioner_defaults) if !@shell_provisioner_defaults.nil?
+      node_config.deep_merge(@shell_provisioner_defaults) if !@shell_provisioner_defaults.nil?
       config.vm.provision :shell do |shell|
         shell.inline = node_config['shell']['inline'] if node_config['shell'].has_key?('inline')
         shell.args   = node_config['shell']['args'] if node_config['shell'].has_key?('args')
@@ -98,7 +98,7 @@ module VagrantHitch
     # Setup Puppet Provisioner
     if node_config.has_key?('puppet')
       # Import any defaults set by the Puppet Provisioner
-      node_config.deep_merge!(@puppet_provisioner_defaults) if !@puppet_provisioner_defaults.nil?
+      node_config.deep_merge(@puppet_provisioner_defaults) if !@puppet_provisioner_defaults.nil?
 
       config.vm.provision :puppet do |puppet|
         puppet.module_path    = node_config['puppet']['modules']
@@ -125,7 +125,7 @@ module VagrantHitch
     # Setup Chef Provisioner
     if node_config.has_key?('chef')
       # Import any defaults set by the Chef Provisioner
-      node_config.deep_merge!(@chef_provisioner_defaults) if !@chef_provisioner_defaults.nil?
+      node_config.deep_merge(@chef_provisioner_defaults) if !@chef_provisioner_defaults.nil?
 
       config.vm.provision :chef_solo do |chef|
         chef.log_level      = node_config['chef']['log_level'].to_sym
@@ -139,7 +139,7 @@ module VagrantHitch
     # Setup Puppet Server Provisioner
     if node_config.has_key?('puppet_server')
       # Import any defaults set by the Puppet Server Provisioner
-      node_config.deep_merge!(@puppet_server_provisioner_defaults) if !@puppet_server_provisioner_defaults.nil?
+      node_config.deep_merge(@puppet_server_provisioner_defaults) if !@puppet_server_provisioner_defaults.nil?
 
       config.vm.provision :puppet_server do |puppet|
         puppet.puppet_server = node_config['puppet_server']['server']
