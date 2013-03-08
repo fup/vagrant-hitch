@@ -2,7 +2,6 @@ require 'yaml'
 require 'vagrant'
 require 'backports'
 require 'deep_merge'
-require 'pry'
 
 module VagrantHitch
   def self.validate(cfdir)

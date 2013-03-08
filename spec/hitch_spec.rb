@@ -1,5 +1,4 @@
 require 'tmpdir'
-require 'ap'
 
 require File.join(File.dirname(__FILE__),'..','/lib/vagrant-hitch')
 describe 'Hash' do
