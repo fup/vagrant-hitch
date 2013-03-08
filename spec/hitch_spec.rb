@@ -50,21 +50,23 @@ describe VagrantHitch do
 
     context 'single vagrant box configuration' do
       let(:vagrant_env) { ::Vagrant::Environment.new(:cwd => @tempdir) }
+      let(:test1) { vagrant_env.vms[:test1] }
+      let(:test2) { vagrant_env.vms[:test2] }
 
       it 'should configure cpu' do
-        vagrant_env.vms_ordered.first.config.vm.customizations.should include(["modifyvm", :id, "--cpus", "2"])
+        test1.config.vm.customizations.should include(["modifyvm", :id, "--cpus", "2"])
       end
 
       it 'should configure memory' do
-        vagrant_env.vms_ordered.first.config.vm.customizations.should include(["modifyvm", :id, "--memory", "512"])
+        test1.config.vm.customizations.should include(["modifyvm", :id, "--memory", "512"])
       end
 
       it 'should have a hostname' do
-        vagrant_env.vms_ordered.first.config.vm.host_name.should eql("test1.vagrant.test")
+        test1.config.vm.host_name.should eql("test1.vagrant.test")
       end
 
       it 'should have a network' do
-        vagrant_env.vms_ordered.first.config.vm.networks.should include([:hostonly, ["10.10.10.10", {:netmask=>"255.255.255.0"}]])
+        test1.config.vm.networks.should include([:hostonly, ["10.10.10.10", {:netmask=>"255.255.255.0"}]])
       end
 
       it 'should have dns' do
@@ -72,18 +74,18 @@ describe VagrantHitch do
       end
 
       it 'should have a provisioner' do
-        vagrant_env.vms_ordered.first.config.vm.provisioners.first.provisioner.should eql(Vagrant::Provisioners::Puppet)
+        test1.config.vm.provisioners.first.provisioner.should eql(Vagrant::Provisioners::Puppet)
       end
 
       it 'should have network ports forward' do
-        vagrant_env.vms_ordered.first.config.vm.forwarded_ports.should include({:name=>"ssh", :guestport=>22,
+        test1.config.vm.forwarded_ports.should include({:name=>"ssh", :guestport=>22,
                                                                                 :hostport=>2222, :protocol=>:tcp,
                                                                                 :adapter=>1, :auto=>true})
       end
 
       it 'should mounted folders' do
-        vagrant_env.vms_ordered.first.config.vm.shared_folders.should have(3).items
-        vagrant_env.vms_ordered.first.config.vm.shared_folders.should include(
+        test1.config.vm.shared_folders.should have(3).items
+        test1.config.vm.shared_folders.should include(
           "webapp"=> {:guestpath=>"/opt/www/", :hostpath=>"./", :create=>"true",
                       :owner=>"vagrant", :group=>nil, :nfs=>false,
                       :transient=>false, :extra=>nil},
@@ -98,6 +100,9 @@ describe VagrantHitch do
 
     context 'property merging' do
       let(:vagrant_env) { ::Vagrant::Environment.new(:cwd => @tempdir) }
+      let(:test1) { vagrant_env.vms[:test1] }
+      let(:test2) { vagrant_env.vms[:test2] }
+
       it 'should create a vagrant environment' do
         vagrant_env.should_not be_nil
       end
@@ -108,7 +113,7 @@ describe VagrantHitch do
       end
 
       it 'should merge the default provisioner settings properly' do
-        puppet_provisioner = vagrant_env.vms_ordered.first.config.vm.provisioners.first
+        puppet_provisioner = test1.config.vm.provisioners.first
         puppet_provisioner.provisioner.should eql(Vagrant::Provisioners::Puppet)
         puppet_provisioner.config.module_path.should have(2).items
         puppet_provisioner.config.manifests_path.should eql("../manifests")
@@ -116,7 +121,7 @@ describe VagrantHitch do
       end
 
       it 'should configure multiple provisioners' do
-        vagrant_env.vms_ordered.last.config.vm.provisioners.should have(2).items
+        test2.config.vm.provisioners.should have(2).items
       end
     end
 

@@ -25,6 +25,8 @@ end
 desc "set up all ruby environments"
 namespace :bootstrap do
   task :all_rubies do
+    system("rvm use 1.8.7-p370; bundle install")
+    system("rvm use 1.9.3-p194; bundle install")
   end
 end
 
