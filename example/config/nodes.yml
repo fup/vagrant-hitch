@@ -21,6 +21,7 @@ web_default: &web_default
 test1:
   <<: *default
   # Mounts do not merge, they only override because YAML anchors don't merge
+  guest: solaris
   ip: 10.10.10.10
   puppet:
     manifest_file: test1.pp

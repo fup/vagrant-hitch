@@ -77,6 +77,10 @@ describe VagrantHitch do
         test1.config.vm.provisioners.first.provisioner.should eql(Vagrant::Provisioners::Puppet)
       end
 
+      it 'should configure a guest' do
+        test1.config.vm.guest.should eql(:solaris)
+      end
+
       it 'should have network ports forward' do
         test1.config.vm.forwarded_ports.should include({:name=>"ssh", :guestport=>22,
                                                                                 :hostport=>2222, :protocol=>:tcp,

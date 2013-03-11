@@ -56,7 +56,7 @@ module VagrantHitch
 
   def self.setup_guest(profile, node_config, config)
     if node_config.has_key?('guest')
-      config.vm.guest = node_config['guest']
+      config.vm.guest = node_config['guest'].to_sym
     end
   end
 
