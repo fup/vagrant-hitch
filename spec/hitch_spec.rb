@@ -79,6 +79,11 @@ describe VagrantHitch do
 
       it 'should configure a guest' do
         test1.config.vm.guest.should eql(:solaris)
+        test2.config.vm.guest.should eql(:linux)
+      end
+
+      it 'should honor boot mode' do
+        test1.config.vm.boot_mode.should eql(:gui)
       end
 
       it 'should have network ports forward' do

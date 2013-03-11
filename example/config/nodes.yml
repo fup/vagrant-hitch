@@ -22,6 +22,7 @@ test1:
   <<: *default
   # Mounts do not merge, they only override because YAML anchors don't merge
   guest: solaris
+  boot_mode: gui
   ip: 10.10.10.10
   puppet:
     manifest_file: test1.pp

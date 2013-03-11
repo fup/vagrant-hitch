@@ -36,6 +36,12 @@ module VagrantHitch
     config.vm.host_name = hostname
   end
 
+  def self.setup_bootmode(profiile, node_config, config)
+    if node_config.has_key?('boot_mode')
+      config.vm.boot_mode = node_config['boot_mode'].to_sym
+    end
+  end
+
   def self.setup_cpu(profile, node_config, config)
     # Configure CPU
     config.vm.customize ["modifyvm", :id, "--cpus", node_config['cpu_count'].to_s] if node_config.has_key?('cpu_count')
@@ -168,6 +174,7 @@ module VagrantHitch
       # Setup the environment
       self.setup_dns(profile, node_config, config)
       self.setup_vbox(profile, node_config, config)
+      self.setup_bootmode(profile, node_config, config)
 
       # set up the server
       self.setup_hostname(profile, node_config, config)
