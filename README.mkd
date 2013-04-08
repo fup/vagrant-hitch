@@ -12,7 +12,7 @@ NOTE: **you will experience warnings, they are ignorable and will be cleared in 
 vagrant plugin install vagrant-hitch
 ```
 
-If you installed it as a ruby gem. Just add the following line to your Vagrantfile.
+If you installed it as a ruby gem, or a vagrant plugin: Just add the following line to your Vagrantfile.
 
 ```
 Vagrant::Config.run &VagrantHitch.up!(path_to_config_directory)
