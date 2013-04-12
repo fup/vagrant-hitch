@@ -52,6 +52,7 @@ describe VagrantHitch do
       let(:vagrant_env) { ::Vagrant::Environment.new(:cwd => @tempdir) }
       let(:test1) { vagrant_env.vms[:test1] }
       let(:test2) { vagrant_env.vms[:test2] }
+      let(:test3) { vagrant_env.vms[:test3] }
 
       it 'should configure cpu' do
         test1.config.vm.customizations.should include(["modifyvm", :id, "--cpus", "2"])
@@ -67,6 +68,10 @@ describe VagrantHitch do
 
       it 'should have a network' do
         test1.config.vm.networks.should include([:hostonly, ["10.10.10.10", {:netmask=>"255.255.255.0"}]])
+      end
+
+      it 'should configure a network' do
+        test3.config.vm.networks.should include([:private_network, [ "10.10.10.11", {:netmask => "255.255.255.0"}]])
       end
 
       it 'should have dns' do

@@ -56,9 +56,9 @@ module VagrantHitch
     # Configure Network
     if node_config.has_key?('ip')
       netmask = node_config.has_key?('netmask') ? node_config['netmask'] : '255.255.255.0'
-      
-      mode = node_config.has_key?('network') ? node_config['network'] : :hostonly
-      config.vm.network mode, node_config['ip'], :netmask => netmask
+
+      mode = node_config.has_key?('network_mode') ? node_config['network_mode'] : 'hostonly'
+      config.vm.network mode.to_sym, node_config['ip'], :netmask => netmask
     end
   end
 

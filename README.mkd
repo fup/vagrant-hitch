@@ -71,7 +71,7 @@ The following vagrant paramters are available in the hitch configuration:
     * `data_bags_path`
 
 #### Vagrant 1.1.x Required
-* `mode` - [:hostonly | :private\_network | :public\_network] \(defaults to :hostonly\)
+* `network_mode` - [:hostonly | :private\_network | :public\_network] \(defaults to :hostonly\)
 
 ### Directory structure
 The directory structure assumes:

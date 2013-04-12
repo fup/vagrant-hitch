@@ -50,3 +50,7 @@ test2:
     tomcat:
       host: ./
       guest: /opt/tomcat/webapp
+test3:
+  <<: *default
+  ip: 10.10.10.11
+  network_mode: private_network
