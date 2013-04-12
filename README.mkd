@@ -34,6 +34,45 @@ require 'vagrant-hitch'
 
 Example files are in the /example directory
 
+### Parameters
+
+The following vagrant paramters are available in the hitch configuration:
+
+* `vbox` - &lt;any valid vagrant box&gt;
+* `vbox-url` - &lt;valid box URL&gt;
+* `boot_mode` - [:headless | :gui]
+* `orgname` - &lt;organization name&gt;
+* `cpu_count` - CPU Count
+* `memory_size` - RAM Amount
+* `ip` - &lt;valid IP address&gt;
+* `netmask` - &lt;valid netmask&gt;
+* `dns` - &lt;hostname&gt;
+* `tld` - &lt;domain name&gt;
+* `patterns` - [/^.*mysite.dev$/, /^.*myothersite.dev$/]
+* `guest` - Custom Guest Implementation
+* `ports` - Custom Port Forwards
+* `winrm` - WinRM configuration
+* `mounts` - Custom Mounts
+* `shell` - Shell Provision File
+    * `inline`
+    * `args`
+    * `path`
+* `puppet` - Puppet Manifest Configuration
+    * `modules`
+    * `manifests_path`
+    * `options`
+* `puppet_server` Puppet Server Configuration
+    * `server`
+    * `options`
+* `chef` - Chef Configuration
+    * `log_level`
+    * `cookbooks_path`
+    * `roles_path`
+    * `data_bags_path`
+
+#### Vagrant 1.1.x Required
+* `network_mode` - [:hostonly | :private\_network | :public\_network] \(defaults to :hostonly\)
+
 ### Directory structure
 The directory structure assumes:
 
